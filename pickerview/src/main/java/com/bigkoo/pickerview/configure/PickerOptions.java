@@ -12,6 +12,7 @@ import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.utils.DateTimeFormat;
 import com.contrarywind.view.WheelView;
 
 import java.util.Calendar;
@@ -22,7 +23,6 @@ import java.util.Calendar;
  */
 
 public class PickerOptions {
-
     //constant
     private static final int PICKER_VIEW_BTN_COLOR_NORMAL = 0xFF057dff;
     private static final int PICKER_VIEW_BG_COLOR_TITLE = 0xFFf5f5f5;
@@ -40,7 +40,6 @@ public class PickerOptions {
     public OnOptionsSelectChangeListener optionsSelectChangeListener;
     public CustomListener customListener;
 
-
     //options picker
     public String label1, label2, label3;//单位字符
     public int option1, option2, option3;//默认选中项
@@ -52,9 +51,8 @@ public class PickerOptions {
 
     public boolean isRestoreItem = false; //切换时，还原第一项
 
-
     //time picker
-    public boolean[] type = new boolean[]{true, true, true, false, false, false};//显示类型，默认显示： 年月日
+    public DateTimeFormat dateTimeFormat = DateTimeFormat.YMD;
 
     public Calendar date;//当前选中时间
     public Calendar startDate;//开始时间
@@ -67,7 +65,6 @@ public class PickerOptions {
 
     public String label_year, label_month, label_day, label_hours, label_minutes, label_seconds;//单位
     public int x_offset_year, x_offset_month, x_offset_day, x_offset_hours, x_offset_minutes, x_offset_seconds;//单位
-
 
     public PickerOptions(int buildType) {
         if (buildType == TYPE_PICKER_OPTIONS) {
@@ -110,5 +107,4 @@ public class PickerOptions {
     public boolean isCenterLabel = false;//是否只显示中间的label,默认每个item都显示
     public Typeface font = Typeface.MONOSPACE;//字体样式
     public WheelView.DividerType dividerType = WheelView.DividerType.FILL;//分隔线类型
-
 }

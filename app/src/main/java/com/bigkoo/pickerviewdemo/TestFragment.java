@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.utils.DateTimeFormat;
 import com.bigkoo.pickerview.view.TimePickerView;
 
 import java.text.SimpleDateFormat;
@@ -30,7 +31,8 @@ public class TestFragment extends Fragment implements View.OnClickListener {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_test, null);
         return mView;
     }
@@ -86,7 +88,7 @@ public class TestFragment extends Fragment implements View.OnClickListener {
                         });
                     }
                 })
-                .setType(new boolean[]{true, true, true, false, false, false})
+                .setType(DateTimeFormat.YMD)
                 .setLabel("", "", "", "", "", "") //设置空字符串以隐藏单位提示   hide label
                 .setDividerColor(Color.DKGRAY)
                 .setContentTextSize(20)

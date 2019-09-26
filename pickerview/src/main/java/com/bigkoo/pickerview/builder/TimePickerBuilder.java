@@ -9,6 +9,7 @@ import com.bigkoo.pickerview.configure.PickerOptions;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.utils.DateTimeFormat;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.contrarywind.view.WheelView;
 
@@ -41,15 +42,13 @@ public class TimePickerBuilder {
     }
 
     /**
-     * new boolean[]{true, true, true, false, false, false}
-     * control the "year","month","day","hours","minutes","seconds " display or hide.
-     * 分别控制“年”“月”“日”“时”“分”“秒”的显示或隐藏。
+     * 日期和时间显示类型
      *
-     * @param type 布尔型数组，长度需要设置为6。
+     * @param dateTimeFormat 日期和时间显示类型
      * @return TimePickerBuilder
      */
-    public TimePickerBuilder setType(boolean[] type) {
-        mPickerOptions.type = type;
+    public TimePickerBuilder setType(DateTimeFormat dateTimeFormat) {
+        mPickerOptions.dateTimeFormat = dateTimeFormat;
         return this;
     }
 

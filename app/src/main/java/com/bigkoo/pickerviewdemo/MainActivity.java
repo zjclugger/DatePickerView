@@ -24,10 +24,12 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
+import com.bigkoo.pickerview.utils.DateTimeFormat;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.widget.DateTimePickerDialog;
 import com.bigkoo.pickerviewdemo.bean.CardBean;
 import com.bigkoo.pickerviewdemo.bean.ProvinceBean;
 
@@ -35,7 +37,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> food = new ArrayList<>();
     private ArrayList<String> clothes = new ArrayList<>();
     private ArrayList<String> computer = new ArrayList<>();
+
+    DateTimePickerDialog mDateTimePickerDialog;
+    private TextView mDateSelectedView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +89,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.btn_GotoJsonData).setOnClickListener(this);
         findViewById(R.id.btn_lunar).setOnClickListener(this);
-    }
 
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -99,7 +104,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (v.getId() == R.id.btn_CustomOptions && pvCustomOptions != null) {
             pvCustomOptions.show(); //弹出自定义条件选择器
         } else if (v.getId() == R.id.btn_CustomTime && pvCustomTime != null) {
-            pvCustomTime.show(); //弹出自定义时间选择器
+            // pvCustomTime.show(); //弹出自定义时间选择器
+            mDateTimePickerDialog = new DateTimePickerDialog(this, new OnTimeSelectListener() {
+                @Override
+                public void onTimeSelect(Date date, View v) {
+                    Toast.makeText(MainActivity.this, "您选择的时间是：" + getTime(date),
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+            mDateTimePickerDialog.show();
         } else if (v.getId() == R.id.btn_no_linkage && pvNoLinkOptions != null) {//不联动数据选择器
             pvNoLinkOptions.show();
         } else if (v.getId() == R.id.btn_GotoJsonData) {//跳转到 省市区解析示例页面
@@ -152,10 +165,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         CheckBox cb_lunar = (CheckBox) v.findViewById(R.id.cb_lunar);
                         cb_lunar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            public void onCheckedChanged(CompoundButton buttonView,
+                                                         boolean isChecked) {
                                 pvCustomLunar.setLunarCalendar(!pvCustomLunar.isLunarCalendar());
                                 //自适应宽
-                                setTimePickerChildWeight(v, isChecked ? 0.8f : 1f, isChecked ? 1f : 1.1f);
+                                setTimePickerChildWeight(v, isChecked ? 0.8f : 1f, isChecked ?
+                                        1f : 1.1f);
                             }
                         });
 
@@ -170,18 +185,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     private void setTimePickerChildWeight(View v, float yearWeight, float weight) {
                         ViewGroup timePicker = (ViewGroup) v.findViewById(R.id.timepicker);
                         View year = timePicker.getChildAt(0);
-                        LinearLayout.LayoutParams lp = ((LinearLayout.LayoutParams) year.getLayoutParams());
+                        LinearLayout.LayoutParams lp =
+                                ((LinearLayout.LayoutParams) year.getLayoutParams());
                         lp.weight = yearWeight;
                         year.setLayoutParams(lp);
                         for (int i = 1; i < timePicker.getChildCount(); i++) {
                             View childAt = timePicker.getChildAt(i);
-                            LinearLayout.LayoutParams childLp = ((LinearLayout.LayoutParams) childAt.getLayoutParams());
+                            LinearLayout.LayoutParams childLp =
+                                    ((LinearLayout.LayoutParams) childAt.getLayoutParams());
                             childLp.weight = weight;
                             childAt.setLayoutParams(childLp);
                         }
                     }
                 })
-                .setType(new boolean[]{true, true, true, false, false, false})
+                .setType(DateTimeFormat.FULL)
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .setDividerColor(Color.RED)
                 .build();
@@ -201,10 +218,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setTimeSelectChangeListener(new OnTimeSelectChangeListener() {
                     @Override
                     public void onTimeSelectChanged(Date date) {
+                        Toast.makeText(MainActivity.this, getTime(date), Toast.LENGTH_SHORT).show();
                         Log.i("pvTime", "onTimeSelectChanged");
                     }
                 })
-                .setType(new boolean[]{true, true, true, true, true, true})
+                .setType(DateTimeFormat.YMDHM)
                 .isDialog(true) //默认设置false ，内部实现将DecorView 作为它的父控件。
                 .addOnCancelClickListener(new View.OnClickListener() {
                     @Override
@@ -216,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Dialog mDialog = pvTime.getDialog();
         if (mDialog != null) {
-
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -249,9 +266,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          */
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
         Calendar startDate = Calendar.getInstance();
-        startDate.set(2014, 1, 23);
+        startDate.set(2014, 1, 1);
         Calendar endDate = Calendar.getInstance();
-        endDate.set(2027, 2, 28);
+        endDate.set(2027, 12, 31);
         //时间选择器 ，自定义布局
         pvCustomTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
@@ -277,11 +294,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setDate(selectedDate)
                 .setRangDate(startDate, endDate)
                 .setLayoutRes(R.layout.pickerview_custom_time, new CustomListener() {
-
                     @Override
                     public void customLayout(View v) {
                         final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_finish);
                         ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
+                        mDateSelectedView = v.findViewById(R.id.tv_date_selected);
                         tvSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -297,12 +314,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         });
                     }
                 })
+                .setTimeSelectChangeListener(new OnTimeSelectChangeListener() {
+                    @Override
+                    public void onTimeSelectChanged(Date date) {
+                        mDateSelectedView.setText(getTime(date));
+                        Toast.makeText(MainActivity.this, getTime(date), Toast.LENGTH_SHORT).show();
+                        Log.i("CustTime", "Cust time onTimeSelectChanged:" + getTime(date));
+                    }
+                })
                 .setContentTextSize(18)
-                .setType(new boolean[]{false, false, false, true, true, true})
+                .setType(DateTimeFormat.YMDHM)
                 .setLabel("年", "月", "日", "时", "分", "秒")
-                .setLineSpacingMultiplier(1.2f)
-                .setTextXOffset(0, 0, 0, 40, 0, -40)
-                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .setLineSpacingMultiplier(2f)
+                .setTextXOffset(0, 0, 0, 0, 0, 0)
+                .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .setDividerColor(0xFF24AD9D)
                 .build();
 
@@ -321,7 +346,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //返回的分别是三个级别的选中位置
                 String tx = options1Items.get(options1).getPickerViewText()
                         + options2Items.get(options1).get(options2)
-                       /* + options3Items.get(options1).get(options2).get(options3).getPickerViewText()*/;
+                        /* + options3Items.get(options1).get(options2).get(options3)
+                        .getPickerViewText()*/;
                 btn_Options.setText(tx);
             }
         })
@@ -342,7 +368,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setOptionsSelectChangeListener(new OnOptionsSelectChangeListener() {
                     @Override
                     public void onOptionsSelectChanged(int options1, int options2, int options3) {
-                        String str = "options1: " + options1 + "\noptions2: " + options2 + "\noptions3: " + options3;
+                        String str = "options1: " + options1 + "\noptions2: " + options2 +
+                                "\noptions3: " + options3;
                         Toast.makeText(MainActivity.this, str, Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -426,7 +453,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setOptionsSelectChangeListener(new OnOptionsSelectChangeListener() {
                     @Override
                     public void onOptionsSelectChanged(int options1, int options2, int options3) {
-                        String str = "options1: " + options1 + "\noptions2: " + options2 + "\noptions3: " + options3;
+                        String str = "options1: " + options1 + "\noptions2: " + options2 +
+                                "\noptions3: " + options3;
                         Toast.makeText(MainActivity.this, str, Toast.LENGTH_SHORT).show();
                     }
                 })
