@@ -237,18 +237,23 @@ public class WheelTime {
                 break;
             case YMDHM:
                 ViewUtils.setVisibility(true, wv_year, wv_month, wv_day, wv_hours, wv_minutes);
+                ViewUtils.setVisibility(false, wv_seconds);
                 break;
             case YMD:
                 ViewUtils.setVisibility(true, wv_year, wv_month, wv_day);
+                ViewUtils.setVisibility(false, wv_hours, wv_minutes, wv_seconds);
                 break;
             case HMS:
                 ViewUtils.setVisibility(true, wv_hours, wv_minutes, wv_seconds);
+                ViewUtils.setVisibility(false, wv_year, wv_month, wv_day);
                 break;
             case HM:
                 ViewUtils.setVisibility(true, wv_hours, wv_minutes);
+                ViewUtils.setVisibility(false, wv_year, wv_month, wv_day, wv_seconds);
                 break;
             default:
                 ViewUtils.setVisibility(true, wv_year, wv_month, wv_day);
+                ViewUtils.setVisibility(false, wv_hours, wv_minutes, wv_seconds);
         }
     }
 
