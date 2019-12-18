@@ -30,6 +30,10 @@ public class TimePickerBuilder {
         mPickerOptions.timeSelectListener = listener;
     }
 
+    public PickerOptions getPickerOptions() {
+        return mPickerOptions;
+    }
+
     //Option
     public TimePickerBuilder setGravity(int gravity) {
         mPickerOptions.textGravity = gravity;
@@ -241,7 +245,8 @@ public class TimePickerBuilder {
     }
 
 
-    public TimePickerBuilder setLabel(String label_year, String label_month, String label_day, String label_hours, String label_mins, String label_seconds) {
+    public TimePickerBuilder setLabel(String label_year, String label_month, String label_day,
+                                      String label_hours, String label_mins, String label_seconds) {
         mPickerOptions.label_year = label_year;
         mPickerOptions.label_month = label_month;
         mPickerOptions.label_day = label_day;
@@ -263,7 +268,8 @@ public class TimePickerBuilder {
      * @return
      */
     public TimePickerBuilder setTextXOffset(int x_offset_year, int x_offset_month, int x_offset_day,
-                                            int x_offset_hours, int x_offset_minutes, int x_offset_seconds) {
+                                            int x_offset_hours, int x_offset_minutes,
+                                            int x_offset_seconds) {
         mPickerOptions.x_offset_year = x_offset_year;
         mPickerOptions.x_offset_month = x_offset_month;
         mPickerOptions.x_offset_day = x_offset_day;

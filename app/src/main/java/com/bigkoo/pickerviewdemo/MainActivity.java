@@ -29,7 +29,7 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
-import com.bigkoo.pickerview.widget.DateTimePickerDialog;
+import com.bigkoo.pickerview.jview.DateTimePickerView;
 import com.bigkoo.pickerviewdemo.bean.CardBean;
 import com.bigkoo.pickerviewdemo.bean.ProvinceBean;
 
@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> clothes = new ArrayList<>();
     private ArrayList<String> computer = new ArrayList<>();
 
-    DateTimePickerDialog mDateTimePickerDialog;
+    DateTimePickerView mDateTimePickerDialog;
     private TextView mDateSelectedView;
 
     @Override
@@ -89,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.btn_GotoJsonData).setOnClickListener(this);
         findViewById(R.id.btn_lunar).setOnClickListener(this);
-
-
     }
 
     @Override
@@ -105,14 +104,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pvCustomOptions.show(); //弹出自定义条件选择器
         } else if (v.getId() == R.id.btn_CustomTime && pvCustomTime != null) {
             // pvCustomTime.show(); //弹出自定义时间选择器
-            mDateTimePickerDialog = new DateTimePickerDialog(this, new OnTimeSelectListener() {
-                @Override
-                public void onTimeSelect(Date date, View v) {
-                    Toast.makeText(MainActivity.this, "您选择的时间是：" + getTime(date),
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
-            mDateTimePickerDialog.show();
+            initJOptionsPickerView();
+            //initJDateTimePickerView();
         } else if (v.getId() == R.id.btn_no_linkage && pvNoLinkOptions != null) {//不联动数据选择器
             pvNoLinkOptions.show();
         } else if (v.getId() == R.id.btn_GotoJsonData) {//跳转到 省市区解析示例页面
@@ -122,6 +115,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (v.getId() == R.id.btn_lunar) {
             pvCustomLunar.show();
         }
+    }
+
+    private void initJDateTimePickerView() {
+        mDateTimePickerDialog = new DateTimePickerView(this, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                Toast.makeText(MainActivity.this, "您选择的时间是：" + getTime(date),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        mDateTimePickerDialog.setInitDateTime("2019-04-26", null);
+        mDateTimePickerDialog.getBuilder().setSubCalSize(12).setSubmitText("OK");
+        mDateTimePickerDialog.setClassicLayout(false);
+        mDateTimePickerDialog.show();
     }
 
     /**
@@ -331,6 +338,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setDividerColor(0xFF24AD9D)
                 .build();
 
+    }
+
+    private void initJOptionsPickerView() {
+        final List<String> list = new ArrayList<>();
+        list.add("张三1");
+        list.add("张三2");
+        list.add("张三3");
+        com.bigkoo.pickerview.jview.OptionsPickerView pickerView =
+                new com.bigkoo.pickerview.jview.OptionsPickerView(this,
+                        new OnOptionsSelectListener() {
+                            @Override
+                            public void onOptionsSelect(int options1, int options2, int options3,
+                                                        View v) {
+                                Toast.makeText(MainActivity.this, list.get(options1),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+        pickerView.getBuilder().setSubmitText("OK了").setCancelText("放弃").setTitleText("我是标题");
+        pickerView.setClassicLayout("自定义标题", "经典取消", "经典确定");
+        pickerView.bindData(list);
+        pickerView.show();
     }
 
 

@@ -54,9 +54,16 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
             btnCancel.setOnClickListener(this);
 
             //设置文字
-            btnSubmit.setText(TextUtils.isEmpty(mPickerOptions.textContentConfirm) ? context.getResources().getString(R.string.pickerview_submit) : mPickerOptions.textContentConfirm);
-            btnCancel.setText(TextUtils.isEmpty(mPickerOptions.textContentCancel) ? context.getResources().getString(R.string.pickerview_cancel) : mPickerOptions.textContentCancel);
-            tvTitle.setText(TextUtils.isEmpty(mPickerOptions.textContentTitle) ? "" : mPickerOptions.textContentTitle);//默认为空
+            btnSubmit.setText(TextUtils.isEmpty(mPickerOptions.textContentConfirm) ?
+                    context.getResources().getString(R.string.pickerview_submit) :
+                    mPickerOptions.textContentConfirm);
+            if (TextUtils.isEmpty(mPickerOptions.textContentCancel)) {
+                btnCancel.setVisibility(View.INVISIBLE);
+            } else {
+                btnCancel.setText(mPickerOptions.textContentCancel);
+            }
+            tvTitle.setText(TextUtils.isEmpty(mPickerOptions.textContentTitle) ? "" :
+                    mPickerOptions.textContentTitle);//默认为空
 
             //设置color
             btnSubmit.setTextColor(mPickerOptions.textColorConfirm);
@@ -83,8 +90,10 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
 
         wheelOptions.setTextContentSize(mPickerOptions.textSizeContent);
         wheelOptions.setLabels(mPickerOptions.label1, mPickerOptions.label2, mPickerOptions.label3);
-        wheelOptions.setTextXOffset(mPickerOptions.x_offset_one, mPickerOptions.x_offset_two, mPickerOptions.x_offset_three);
-        wheelOptions.setCyclic(mPickerOptions.cyclic1, mPickerOptions.cyclic2, mPickerOptions.cyclic3);
+        wheelOptions.setTextXOffset(mPickerOptions.x_offset_one, mPickerOptions.x_offset_two,
+                mPickerOptions.x_offset_three);
+        wheelOptions.setCyclic(mPickerOptions.cyclic1, mPickerOptions.cyclic2,
+                mPickerOptions.cyclic3);
         wheelOptions.setTypeface(mPickerOptions.font);
 
         setOutSideCancelable(mPickerOptions.cancelable);
@@ -135,7 +144,8 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
 
     private void reSetCurrentItems() {
         if (wheelOptions != null) {
-            wheelOptions.setCurrentItems(mPickerOptions.option1, mPickerOptions.option2, mPickerOptions.option3);
+            wheelOptions.setCurrentItems(mPickerOptions.option1, mPickerOptions.option2,
+                    mPickerOptions.option3);
         }
     }
 
@@ -183,7 +193,8 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     public void returnData() {
         if (mPickerOptions.optionsSelectListener != null) {
             int[] optionsCurrentItems = wheelOptions.getCurrentItems();
-            mPickerOptions.optionsSelectListener.onOptionsSelect(optionsCurrentItems[0], optionsCurrentItems[1], optionsCurrentItems[2], clickView);
+            mPickerOptions.optionsSelectListener.onOptionsSelect(optionsCurrentItems[0],
+                    optionsCurrentItems[1], optionsCurrentItems[2], clickView);
         }
     }
 

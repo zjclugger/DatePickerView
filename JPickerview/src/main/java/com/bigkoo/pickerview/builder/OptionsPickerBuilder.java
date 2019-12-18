@@ -30,6 +30,10 @@ public class OptionsPickerBuilder {
         mPickerOptions.optionsSelectListener = listener;
     }
 
+    public PickerOptions getPickerOptions() {
+        return mPickerOptions;
+    }
+
     //Option
     public OptionsPickerBuilder setSubmitText(String textContentConfirm) {
         mPickerOptions.textContentConfirm = textContentConfirm;
@@ -231,7 +235,8 @@ public class OptionsPickerBuilder {
         return this;
     }
 
-    public OptionsPickerBuilder setTextXOffset(int xoffset_one, int xoffset_two, int xoffset_three) {
+    public OptionsPickerBuilder setTextXOffset(int xoffset_one, int xoffset_two,
+                                               int xoffset_three) {
         mPickerOptions.x_offset_one = xoffset_one;
         mPickerOptions.x_offset_two = xoffset_two;
         mPickerOptions.x_offset_three = xoffset_three;

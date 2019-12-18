@@ -4,4 +4,7 @@
     <color name="lighter_gray">#FFE2E2E2</color>
     <color name="black">#FF000000</color>
     <color name="text_selected">#ED6A53</color>
+
+    <color name="light_gray">#FFCCCCCC</color>
+    <color name="list_line">#FFDDDDDD</color>
 </resources>
