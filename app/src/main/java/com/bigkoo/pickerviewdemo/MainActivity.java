@@ -104,8 +104,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pvCustomOptions.show(); //弹出自定义条件选择器
         } else if (v.getId() == R.id.btn_CustomTime && pvCustomTime != null) {
             // pvCustomTime.show(); //弹出自定义时间选择器
-            initJOptionsPickerView();
-            //initJDateTimePickerView();
+            //initJOptionsPickerView();
+            initJDateTimePickerView();
+            //initYearMonthPickerView();
         } else if (v.getId() == R.id.btn_no_linkage && pvNoLinkOptions != null) {//不联动数据选择器
             pvNoLinkOptions.show();
         } else if (v.getId() == R.id.btn_GotoJsonData) {//跳转到 省市区解析示例页面
@@ -121,12 +122,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDateTimePickerDialog = new DateTimePickerView(this, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                Toast.makeText(MainActivity.this, "您选择的时间是：" + getTime(date),
+                int days =
+                        DateTimeFormat.dataToCalendar(date).getActualMaximum(Calendar.DAY_OF_MONTH);
+                Toast.makeText(MainActivity.this, "您选择的时间是：" + DateTimeFormat.parseDateTime(date,
+                        "yyyy-MM") + ",本月有" + DateTimeFormat.daysOfMonth(date) + "天",
                         Toast.LENGTH_SHORT).show();
             }
-        });
+        }, DateTimeFormat.YM);
         mDateTimePickerDialog.setInitDateTime("2019-04-26", null);
-        mDateTimePickerDialog.getBuilder().setSubCalSize(12).setSubmitText("OK");
+        mDateTimePickerDialog.getBuilder().setSubCalSize(12).setSubmitText("OK").setLabel(
+                "张三李四过大年", "岁岁年年都不同", "", "", "", "");
         mDateTimePickerDialog.setClassicLayout(false);
         mDateTimePickerDialog.show();
     }
@@ -330,8 +335,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 })
                 .setContentTextSize(18)
-                .setType(DateTimeFormat.YMDHM)
-                .setLabel("年", "月", "日", "时", "分", "秒")
+                .setType(DateTimeFormat.YM)
+                .setLabel("年", "月", "日", "", "分", "秒")
                 .setLineSpacingMultiplier(2f)
                 .setTextXOffset(0, 0, 0, 0, 0, 0)
                 .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
@@ -359,6 +364,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         pickerView.getBuilder().setSubmitText("OK了").setCancelText("放弃").setTitleText("我是标题");
         pickerView.setClassicLayout("自定义标题", "经典取消", "经典确定");
         pickerView.bindData(list);
+        pickerView.show();
+    }
+
+    List<String> mYearList = new ArrayList<>();
+    List<String> mMonthList = new ArrayList<>();
+
+    private void initYearMonthPickerView() {
+        for (int i = 2000; i <= Calendar.getInstance().get(Calendar.YEAR) + 1; i++) {
+            mYearList.add(String.valueOf(i));
+        }
+
+        for (int i = 1; i < 13; i++) {
+            mMonthList.add(String.valueOf(i));
+        }
+
+        com.bigkoo.pickerview.jview.OptionsPickerView pickerView =
+                new com.bigkoo.pickerview.jview.OptionsPickerView(this,
+                        new OnOptionsSelectListener() {
+                            @Override
+                            public void onOptionsSelect(int options1, int options2, int options3,
+                                                        View v) {
+                                Toast.makeText(MainActivity.this,
+                                        mYearList.get(options1) + "-" + mMonthList.get(options2),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+        pickerView.getBuilder()
+                .setSubmitText("OK了")
+                .setCancelText("放弃")
+                .setTitleText("我是标题")
+                .setSelectOptions(3, 3)
+                .setLabels("年", "月份", null);
+
+        pickerView.setClassicLayout("自定义标题", "经典取消", "经典确定");
+
+        pickerView.bindDataWithoutLink(mYearList, mMonthList, null);
         pickerView.show();
     }
 

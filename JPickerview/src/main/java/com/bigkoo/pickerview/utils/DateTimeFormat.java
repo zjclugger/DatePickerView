@@ -1,5 +1,6 @@
 package com.bigkoo.pickerview.utils;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -15,6 +16,7 @@ public enum DateTimeFormat {
     FULL("yyyy-MM-dd HH:mm:ss"),
     YMDHM("yyyy-MM-dd HH:mm"),
     YMD("yyyy-MM-dd"),
+    YM("yyyy-MM"),
     HMS("HH:mm:ss"),
     HM("HH:mm");
 
@@ -54,5 +56,21 @@ public enum DateTimeFormat {
             Log.e("DateTimeFormat", "");
         }
         return date;
+    }
+
+    public static String parseDateTime(Date date, String format) {
+        if (date == null) {
+            return null;
+        }
+
+        if (TextUtils.isEmpty(format)) {
+            format = "yyyy-MM-dd";
+        }
+
+        return new SimpleDateFormat(format).format(date);
+    }
+
+    public static int daysOfMonth(Date date) {
+        return dataToCalendar(date).getActualMaximum(Calendar.DAY_OF_MONTH);
     }
 }

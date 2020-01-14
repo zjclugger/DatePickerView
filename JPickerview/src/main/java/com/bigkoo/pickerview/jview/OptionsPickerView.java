@@ -43,7 +43,7 @@ public class OptionsPickerView<T> {
                 .setSelectOptions(0)//默认选中项
                 .setTextColorCenter(Color.BLACK)
                 .isRestoreItem(true)//切换时是否还原，设置默认选中第一项。
-                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .setOutSideColor(0x99000000); //设置外部遮罩颜色;
     }
 
@@ -100,6 +100,18 @@ public class OptionsPickerView<T> {
     }
 
     /**
+     * 绑定不联动的数据
+     *
+     * @param firstList
+     * @param secondList
+     * @param thirdList
+     */
+    public void bindDataWithoutLink(List<T> firstList, List<T> secondList, List<T> thirdList) {
+        create();
+        mOptionsPickerView.setNPicker(firstList, secondList, thirdList);
+    }
+
+    /**
      * 创建选择器
      *
      * @return
@@ -109,7 +121,7 @@ public class OptionsPickerView<T> {
         return this;
     }
 
-    public OptionsPickerView OnOptionsSelectChangeListener(OnOptionsSelectChangeListener selectChangeListener) {
+    public OptionsPickerView setOnOptionsSelectChangeListener(OnOptionsSelectChangeListener selectChangeListener) {
         mOptionsPickerBuilder.setOptionsSelectChangeListener(selectChangeListener);
         return this;
     }

@@ -156,7 +156,7 @@ public class DateTimePickerView {
         });
     }
 
-    public DateTimePickerView OnOptionsSelectChangeListener(OnTimeSelectChangeListener selectChangeListener) {
+    public DateTimePickerView setOnTimeSelectChangeListener(OnTimeSelectChangeListener selectChangeListener) {
         mTimePickerBuilder.setTimeSelectChangeListener(selectChangeListener);
         return this;
     }

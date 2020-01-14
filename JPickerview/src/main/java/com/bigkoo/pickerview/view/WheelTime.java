@@ -243,6 +243,10 @@ public class WheelTime {
                 ViewUtils.setVisibility(true, wv_year, wv_month, wv_day);
                 ViewUtils.setVisibility(false, wv_hours, wv_minutes, wv_seconds);
                 break;
+            case YM:
+                ViewUtils.setVisibility(true, wv_year, wv_month);
+                ViewUtils.setVisibility(false, wv_day, wv_hours, wv_minutes, wv_seconds);
+                break;
             case HMS:
                 ViewUtils.setVisibility(true, wv_hours, wv_minutes, wv_seconds);
                 ViewUtils.setVisibility(false, wv_year, wv_month, wv_day);
