@@ -131,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }, DateTimeFormat.YM);
         mDateTimePickerDialog.setInitDateTime("2019-04-26", null);
         mDateTimePickerDialog.getBuilder().setSubCalSize(12).setSubmitText("OK").setLabel(
-                "张三李四过大年", "岁岁年年都不同", "", "", "", "");
-        mDateTimePickerDialog.setClassicLayout(false);
+                "张三", "岁", "", "", "", "");
+        mDateTimePickerDialog.displayClassicLayout(false, 200);
         mDateTimePickerDialog.show();
     }
 
@@ -361,14 +361,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         });
 
-        pickerView.getBuilder().setSubmitText("OK了").setCancelText("放弃").setTitleText("我是标题");
-        pickerView.setClassicLayout("自定义标题", "经典取消", "经典确定");
+        pickerView.getBuilder().setSubmitText("OK了").setCancelText("放弃").setTitleText("我是标题").setLabels("", "", "");
+        pickerView.displayClassicLayout("自定义标题", "经典取消", "经典确定", 100);
         pickerView.bindData(list);
         pickerView.show();
     }
 
     List<String> mYearList = new ArrayList<>();
     List<String> mMonthList = new ArrayList<>();
+    List<String> mDayList=new ArrayList<>();
 
     private void initYearMonthPickerView() {
         for (int i = 2000; i <= Calendar.getInstance().get(Calendar.YEAR) + 1; i++) {
@@ -377,6 +378,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for (int i = 1; i < 13; i++) {
             mMonthList.add(String.valueOf(i));
+        }
+
+        for (int i = 1; i < 31; i++) {
+            mDayList.add(String.valueOf(i));
         }
 
         com.bigkoo.pickerview.jview.OptionsPickerView pickerView =
@@ -398,9 +403,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setSelectOptions(3, 3)
                 .setLabels("年", "月份", null);
 
-        pickerView.setClassicLayout("自定义标题", "经典取消", "经典确定");
+        pickerView.displayClassicLayout("自定义标题", "经典取消", "经典确定",240);
 
-        pickerView.bindDataWithoutLink(mYearList, mMonthList, null);
+        pickerView.bindDataWithoutLink(mYearList, mMonthList, mDayList);
         pickerView.show();
     }
 

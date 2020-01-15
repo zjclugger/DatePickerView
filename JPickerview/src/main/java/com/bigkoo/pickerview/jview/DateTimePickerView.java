@@ -4,12 +4,12 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.R;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
-import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.utils.DateTimeFormat;
@@ -34,6 +34,7 @@ public class DateTimePickerView {
     private SimpleDateFormat mDateFormat;
     private Date mInitDateTime = new Date(System.currentTimeMillis());
     private TimePickerBuilder mTimePickerBuilder;
+    private int mLayoutWidth;
 
     public DateTimePickerView(Context context, TimePickerView dateTimePickerView,
                               OnTimeSelectListener selectListener,
@@ -91,7 +92,7 @@ public class DateTimePickerView {
                 .setSubmitColor(Color.WHITE)
                 .setCancelColor(Color.WHITE)*/
                 /*.animGravity(Gravity.RIGHT)// default is center*/
-                .setDividerColor(mContext.getResources().getColor(R.color.list_line))
+                .setDividerColor(mContext.getResources().getColor(R.color.black))
                 .setDate(selectedDate)
                 .setRangDate(mStartDate, mEndDate)
                 .setTimeSelectChangeListener(new OnTimeSelectChangeListener() {
@@ -135,13 +136,21 @@ public class DateTimePickerView {
         return this;
     }
 
-    public void setClassicLayout(final boolean showCancel) {
+    public void displayClassicLayout(final boolean showCancel) {
         mTimePickerBuilder.setLayoutRes(R.layout.custom_dialog_date_picker, new CustomListener() {
             @Override
             public void customLayout(View v) {
                 final TextView tvSubmit = v.findViewById(R.id.btnSubmit);
                 if (!showCancel) {
                     v.findViewById(R.id.btnCancel).setVisibility(View.INVISIBLE);
+                }
+                if (mLayoutWidth > 0) {
+                    LinearLayout layout = v.findViewById(R.id.custom_date_picker_layout);
+                    LinearLayout.LayoutParams layoutParams =
+                            new LinearLayout.LayoutParams(ViewUtils.dp2px(mContext, mLayoutWidth),
+                                    LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(20, 5, 20, 5);
+                    layout.setLayoutParams(layoutParams);
                 }
                 mDateTimeView = v.findViewById(R.id.tvTitle);
                 mDateTimeView.setText(mTimePickerBuilder.getPickerOptions().textContentTitle);
@@ -154,6 +163,16 @@ public class DateTimePickerView {
                 });
             }
         });
+    }
+
+    public void displayClassicLayout(boolean showCancel, int layoutWidth) {
+        mLayoutWidth = layoutWidth;
+        displayClassicLayout(showCancel);
+    }
+
+    public DateTimePickerView setClassicLayoutWidth(int layoutWidth) {
+        mLayoutWidth = layoutWidth;
+        return this;
     }
 
     public DateTimePickerView setOnTimeSelectChangeListener(OnTimeSelectChangeListener selectChangeListener) {

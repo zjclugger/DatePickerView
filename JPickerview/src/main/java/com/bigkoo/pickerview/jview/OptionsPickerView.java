@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.R;
@@ -24,6 +25,7 @@ public class OptionsPickerView<T> {
     private com.bigkoo.pickerview.view.OptionsPickerView mOptionsPickerView;
     private OptionsPickerBuilder mOptionsPickerBuilder;
     private OnOptionsSelectListener mSelectListener;
+    private int mLayoutWidth;
 
     public OptionsPickerView(Context context, OnOptionsSelectListener listener) {
         mContext = context;
@@ -47,12 +49,22 @@ public class OptionsPickerView<T> {
                 .setOutSideColor(0x99000000); //设置外部遮罩颜色;
     }
 
-    public void setClassicLayout(final String titleText, final String cancelText,
+    public void displayClassicLayout(final String titleText, final String cancelText,
                                  final String confirmText) {
         mOptionsPickerBuilder.setLayoutRes(R.layout.custom_option_picker_layout,
                 new CustomListener() {
                     @Override
                     public void customLayout(View v) {
+                        if (mLayoutWidth > 0) {
+                            LinearLayout layout = v.findViewById(R.id.custom_option_picker_layout);
+                            LinearLayout.LayoutParams layoutParams =
+                                    new LinearLayout.LayoutParams(ViewUtils.dp2px(mContext,
+                                            mLayoutWidth),
+                                            LinearLayout.LayoutParams.WRAP_CONTENT);
+                            layoutParams.setMargins(20, 5, 20, 5);
+                            layout.setLayoutParams(layoutParams);
+                        }
+
                         Button btnCancel = v.findViewById(R.id.btnCancel);
                         if (TextUtils.isEmpty(cancelText)) {
                             btnCancel.setVisibility(View.INVISIBLE);
@@ -82,6 +94,17 @@ public class OptionsPickerView<T> {
                         tvTitle.setText(titleText);
                     }
                 });
+    }
+
+    public void displayClassicLayout(String titleText, String cancelText, String confirmText,
+                                     int layoutWidth) {
+        mLayoutWidth = layoutWidth;
+        displayClassicLayout(titleText, cancelText, confirmText);
+    }
+
+    public OptionsPickerView setClassicLayoutWidth(int layoutWidth) {
+        mLayoutWidth = layoutWidth;
+        return this;
     }
 
     public void bindData(List<T> firstList) {

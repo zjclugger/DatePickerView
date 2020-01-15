@@ -41,8 +41,8 @@ publish {
     publishVersion = '1.0.0'  //version code,compile part 3
     desc = 'Base on Android-PickerView:4.1.8 (wheelview version code 30 name 4.0.9)'
     website = 'https://github.com/zjclugger/DatePickerView' //github
-}
-*/
+}*/
+
 
 dependencies {
 //    compile fileTree(include: ['*.jar'], dir: 'libs')

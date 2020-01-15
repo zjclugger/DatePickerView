@@ -56,6 +56,15 @@
         android:layout_marginLeft="@dimen/margin_larger"
         android:layout_marginRight="@dimen/margin_larger"
         android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/custom_option_picker_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_larger"
+            android:gravity="center"
         android:orientation="horizontal">
 
         <com.contrarywind.view.WheelView
@@ -75,6 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
