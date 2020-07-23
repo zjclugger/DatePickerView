@@ -20,6 +20,7 @@ import com.bigkoo.pickerview.R;
 import com.bigkoo.pickerview.configure.PickerOptions;
 import com.bigkoo.pickerview.listener.OnDismissListener;
 import com.bigkoo.pickerview.utils.PickerViewAnimateUtil;
+import com.bigkoo.pickerview.utils.SoftKeyboardUtils;
 
 /**
  * Created by Sai on 15/11/22.
@@ -129,6 +130,7 @@ public class BasePickerView {
      * 添加View到根视图
      */
     public void show() {
+        SoftKeyboardUtils.hideKeyboard((Activity) context);
         if (isDialog()) {
             showDialog();
         } else {
